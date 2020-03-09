@@ -1,0 +1,19 @@
+<h2> Edit Image goes here</h2>
+
+<div class="editor">
+	<div class="canvas">
+		<!-- <img id="cropperimage" src="{{imageUrl}}"> -->
+		<!-- <img id="cropperimage" src="../../../assets/img/thumbs-up.jpg"> -->
+		<img id="cropperimage" src="{{imageSrc}}">
+	</div>
+	<div class="toolbar">
+		<button class="toolbar__button" title="Crop Tool" (click)="processCropperAction('crop')"><span class="la la-crop"></span></button>
+		<button class="toolbar__button" title="Rotate Left" (click)="processCropperAction('rotate-left')"><span class="la la-rotate-left"></span></button>
+		<button class="toolbar__button" title="Rotate Right" (click)="processCropperAction('rotate-right')"><span class="la la-rotate-right"></span></button>
+		<button class="toolbar__button" title="Clear" (click)="processCropperAction('clear')"><span class="la la-ban"></span></button>
+		<button class="toolbar__button" title="Crop & Apply Changes" (click)="processCropperAction('cropok')"><span class="la la-check"></span></button>
+		<button class="toolbar__button" title="Undo" (click)="processCropperAction('undo')"><span class="la la-undo"></span></button>
+		<button class="toolbar__button" title="Save" (click)="processCropperAction('save')"><span class="la la-save"></span></button>
+		<button class="toolbar__button" title="Close Editor" (click)="processCropperAction('close')"><span class="la la-close"></span></button>
+	</div>
+</div>

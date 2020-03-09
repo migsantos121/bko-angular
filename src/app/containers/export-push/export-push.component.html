@@ -1,0 +1,314 @@
+<bo-header [title]="titre$"></bo-header>
+
+<div class="ks-crm-contacts-container">
+  <div class="ks-crm-contacts-users-list-column">
+    <div class="ks-crm-contacts-users-list-column-table-container">
+      <div class="row">
+        <div class="col-lg-1"></div>
+
+        <div class="col-lg-2 col-md-6">
+          <div class="card ks-widget-payment-simple-amount-item ks-purple">
+            <div class="payment-simple-amount-item-body">
+              <div class="payment-simple-amount-item-amount center">
+                <button class="btn btn-primary-outline export-users" data-toggle="modal" data-target="#bd-modal-export-user">
+                  <span class="ks-amount-icon la la-download"></span>
+                </button>
+              </div>
+              <div class="payment-simple-amount-item-description center">
+                Export la liste des users
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6">
+          <div class="card ks-widget-payment-simple-amount-item ks-green">
+            <div class="payment-simple-amount-item-body">
+              <div class="payment-simple-amount-item-amount center">
+                <button class="btn btn-primary-outline export-annonces" data-toggle="modal" data-target="#bd-modal-export-annonces">
+                  <span class="ks-amount-icon la la-download"></span>
+                </button>
+              </div>
+              <div class="payment-simple-amount-item-description center">
+                Export la liste des annonces
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6">
+          <div class="card ks-widget-payment-simple-amount-item ks-pink">
+            <div class="payment-simple-amount-item-body">
+              <div class="payment-simple-amount-item-amount center">
+                <button class="btn btn-primary-outline export-recherches" data-toggle="modal" data-target="#bd-modal-export-recherches">
+                  <span class="ks-amount-icon la la-download"></span>
+                </button>
+              </div>
+              <div class="payment-simple-amount-item-description center">
+                Exporter les recherches
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6">
+          <div class="card ks-widget-payment-simple-amount-item ks-orange">
+            <div class="payment-simple-amount-item-body">
+              <div class="payment-simple-amount-item-amount center">
+                <button class="btn btn-primary-outline export-report" data-toggle="modal" data-target="#bd-modal-export-report">
+                  <span class="ks-amount-icon la la-download"></span>
+                </button>
+              </div>
+              <div class="payment-simple-amount-item-description center">
+                Envoyer rapport
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-6">
+          <div class="card ks-widget-payment-simple-amount-item ks-orange">
+            <div class="payment-simple-amount-item-body">
+              <div class="payment-simple-amount-item-amount center">
+                <button class="btn btn-primary-outline send" data-toggle="modal" data-target="#bd-modal-send-push">
+                  <span class="ks-amount-icon la la-download"></span>
+                </button>
+              </div>
+              <div class="payment-simple-amount-item-description center">
+                Envoyer des push notifs
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bd-modal-export-user" id="bd-modal-export-user" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" style="min-width:600px; max-width: 800px;">
+    <div class="modal-content">
+      <form [formGroup]='exportUserForm' (ngSubmit)="onFormSubmit(exportUserForm.value)">
+        <div class="modal-header">
+          <h5 class="modal-title">Exporter la liste des users</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="la la-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="form-group row">
+              <label for="filtreActionUser" class="col-2 col-form-label">Filtres</label>
+              <div class="col-10">
+                <select formControlName="filtreActionUser" id="filtreActionUser" class="form-control">
+                  <option value="0">Utilisateurs inscrits/Pays</option>
+                  <option value="1">Nombre de nouveaux vendeurs</option>
+                  <option value="2">Users via les commerciaux</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="example-search-input" class="col-form-label">Debut - Fin</label>
+              <input type="text" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control"
+              />
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Exporter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bd-modal-export-annonces" id="bd-modal-export-annonces" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" style="min-width:400px; max-width: 600px;">
+    <div class="modal-content">
+      <form [formGroup]='exportAdsForm' (ngSubmit)="onAdsFormSubmit(exportAdsForm.value)">
+        <div class="modal-header">
+          <h5 class="modal-title">Exporter la liste des annonces</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="la la-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col form-group">
+                <label for="filtreActionUser2" class="col-form-label">Pays</label>
+                <select formControlName="pays" id="filtreActionUser2" class="form-control">
+                  <option value="0">Tous les pays</option>
+                  <option *ngFor="let p of pays$ | async" [value]="p.id">{{p.nom}}</option>
+                </select>
+              </div>
+              <div class="col form-group">
+                <label for="filtreActionUser1" class="col-form-label">Catégorie</label>
+                <select formControlName="categorie" id="filtreActionUser1" class="form-control">
+                  <option value="0">Toutes les catégories</option>
+                  <option *ngFor="let p of categories$ | async" [value]="p.id">{{p.nom}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="example-search-input" class="col-form-label">Debut - Fin</label>
+              <input type="text" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control"
+              />
+            </div>
+            <div class="form-group row">
+              <label for="example-search-input" class="col-6 col-form-label">Annonce validée seulement? </label>
+              <div class="col-6">
+                <input formControlName="onlyaccepted" type="checkbox" />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Exporter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-modal-export-recherches" id="bd-modal-export-recherches" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" style="min-width:400px; max-width: 600px;">
+    <div class="modal-content">
+      <form [formGroup]='exportSearchForm' (ngSubmit)="onSearchFormSubmit(exportSearchForm.value)">
+        <div class="modal-header">
+          <h5 class="modal-title">Exporter la liste des recherches</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="la la-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col form-group">
+                <label for="filtreActionUser2" class="col-form-label">Pays</label>
+                <select formControlName="pays" id="filtreActionUser2" class="form-control">
+                  <option value="0">Tous les pays</option>
+                  <option *ngFor="let p of pays$ | async" [value]="p.id">{{p.nom}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="example-search-input" class="col-form-label">Debut - Fin</label>
+              <input type="text" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control"
+              />
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Exporter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-modal-export-report" id="bd-modal-export-report" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" style="min-width:400px; max-width: 600px;">
+    <div class="modal-content">
+      <form [formGroup]='exportReportForm' (ngSubmit)="onReportFormSubmit(exportReportForm.value)">
+        <div class="modal-header">
+          <h5 class="modal-title">Exporter rapport</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="la la-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col form-group">
+                <label class="col-form-label">Email</label>
+                <input formControlName="mail" class="form-control" type="text" />
+              </div>
+              <div class="col form-group">
+                <label for="filtreActionUser2" class="col-form-label">Pays</label>
+                <select formControlName="pays" id="filtreActionUser2" class="form-control">
+                  <option value="0">Tous les pays</option>
+                  <option *ngFor="let p of pays$ | async" [value]="p.id">{{p.nom}}</option>
+
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="example-search-input" class="col-form-label">Debut - Fin</label>
+              <input type="text" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control"
+              />
+            </div>
+
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Exporter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-modal-send-push" id="bd-modal-send-push" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]='sendNotifForm' (ngSubmit)="onNotifFormSubmit(sendNotifForm.value)">
+        <div class="modal-header">
+          <h5 class="modal-title">Envoyer des pushs notifs</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="la la-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="form-group">
+              <label class="col-form-label">Titre</label>
+              <input formControlName="title" class="form-control" type="text" />
+            </div>
+            <div class="form-group">
+              <label for="filtreActionUser2" class="col-form-label">Choix cible</label>
+              <select formControlName="target" id="filtreActionUser2" class="form-control">
+                <option value="registered_user">Utilisateurs inscrits</option>
+                <option value="no_registered_user">Utilisateurs non inscrits</option>
+                <option value="all">Tous les utilisateurs</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="example-search-input" class="col-form-label">Message</label>
+              <textarea formControlName="message" class="form-control"></textarea>
+            </div>
+
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Exporter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

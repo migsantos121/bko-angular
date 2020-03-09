@@ -1,0 +1,130 @@
+<ngx-loading [show]="status$ | async" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+
+<bo-header [title]="titre$"></bo-header>
+
+<div class="ks-crm-contacts-container">
+  <div class="ks-crm-contacts-users-list-column">
+    <div class="ks-crm-contacts-users-list-column-table-container" style="height:100vh;">
+      <div class="container">
+        <ul class="nav ks-nav-tabs ks-tabs-page-default ks-tabs-full-page">
+          <li class="nav-item">
+            <a class="nav-link active show" href="#" data-toggle="tab" data-target="#profil">
+              Edition profil
+              <span class="badge badge-pink badge-pill"></span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="tab" data-target="#mdp">
+              Edition mot de passe
+              <span class="badge badge-danger-outline badge-pill"></span>
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+
+          <div class="tab-pane active show" id="profil" role="tabpanel">
+            <div class="row">
+              <div class="col-lg-3"></div>
+              <div class="col-lg-6">
+                <form [formGroup]='userForm' (ngSubmit)="onFormSubmit(userForm.value)">
+                  <div class=" form-group">
+                    <div class="fl-flex-label fl-collapsed fl-background">
+                      <label class="fl-label" for="default-input00" style="left: 16px; right: 15px;">Prénom
+                        <span class="fl-required">*</span>
+                      </label>
+                    </div>
+                    <input type="text" class="form-control" id="default-input00" formControlName="firstname">
+                  </div>
+                  <div class=" form-group">
+                    <div class="fl-flex-label fl-collapsed fl-background">
+                      <label class="fl-label" for="default-input11" style="left: 16px; right: 15px;">Nom
+                        <span class="fl-required">*</span>
+                      </label>
+                    </div>
+                    <input type="text" class="form-control" id="default-input11" formControlName="lastname">
+                  </div>
+                  <div class=" form-group">
+                    <div class="fl-flex-label fl-collapsed fl-background">
+                      <label class="fl-label" for="default-input3" style="left: 16px; right: 15px;">Username
+                        <span class="fl-required">*</span>
+                      </label>
+                    </div>
+                    <input type="text" class="form-control" id="default-input33" formControlName="username">
+                  </div>
+
+                  <div class="row">
+                    <div class="col form-group">
+                      <div class="fl-flex-label fl-collapsed fl-background">
+                        <label class="fl-label" for="default-input4" style="left: 16px; right: 15px;">Role
+                          <span class="fl-required">*</span>
+                        </label>
+                      </div>
+                      <select class="form-control" formControlName="role">
+                        <option value=""></option>
+                        <option value="admin">Admin</option>
+                        <option value="moderator">Moderator</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-3"></div>
+            </div>
+
+          </div>
+          <div class="tab-pane" id="mdp" role="tabpanel">
+            <div class="row">
+              <div class="col-lg-3"></div>
+              <div class="col-lg-6">
+                <form [formGroup]='passwordForm' (ngSubmit)="onPasswordFormSubmit(passwordForm.value)">
+                  <div class=" form-group">
+                    <div class="fl-flex-label fl-collapsed fl-background">
+                      <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Ancien mot de passe
+                        <span class="fl-required">*</span>
+                      </label>
+                    </div>
+                    <input type="password" class="form-control" id="default-input" formControlName="old_password">
+                    <p class="label label-danger" *ngIf="passwordForm.get('old_password').hasError('minlength')">Le mot de passe doit faire minimum 6 caractéres...</p>
+
+                  </div>
+                  <div class=" form-group">
+                    <div class="fl-flex-label fl-collapsed fl-background">
+                      <label class="fl-label" for="default-input1" style="left: 16px; right: 15px;">Nouveau mot de passe
+                        <span class="fl-required">*</span>
+                      </label>
+                    </div>
+                    <input type="password" class="form-control" id="default-input1" formControlName="password">
+                    <p class="labellabel-danger" *ngIf="passwordForm.hasError('mismatch')  && passwordForm.get('password').touched">Les mots de passes ne correspondent pas</p>
+                  </div>
+
+                  <div class=" form-group">
+                    <div class="fl-flex-label fl-collapsed fl-background">
+                      <label class="fl-label" for="default-input3" style="left: 16px; right: 15px;">Confirmer le mot de passe
+                        <span class="fl-required">*</span>
+                      </label>
+                    </div>
+                    <input type="password" class="form-control" id="default-input3" formControlName="confirm_password">
+                    <p class="labellabel-danger" *ngIf="passwordForm.hasError('mismatch')  && passwordForm.get('confirm_password').touched">Les mots de passes ne correspondent pas</p>
+                    <p class="label label-danger" *ngIf="passwordForm.get('confirm_password').hasError('minlength')">Le mot de passe doit faire minimum 6 caractéres...</p>
+
+
+                  </div>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-warning btn-block" [disabled]="!passwordForm.valid">Enregistrer</button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-3"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

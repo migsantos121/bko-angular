@@ -1,0 +1,197 @@
+<bo-header [title]="titre$"></bo-header>
+
+<div class="ks-dashboard-tabbed-sidebar">
+  <div class="ks-dashboard-tabbed-sidebar-widgets">
+    <div class="row" *ngIf="data">
+      <div class="col-lg-3 col-md-6">
+        <div class="card ks-widget-payment-simple-amount-item ks-purple">
+          <div class="payment-simple-amount-item-icon-block">
+            <span class="la la-pencil-square-o ks-icon"></span>
+          </div>
+
+          <div class="payment-simple-amount-item-body">
+            <div class="payment-simple-amount-item-amount">
+              <span class="ks-amount">{{data.ads_moderated}}</span>
+            </div>
+            <div class="payment-simple-amount-item-description">
+              Annonces modérées
+            </div>
+            <span class="ks-progress-type">{{data.ads_moderated_percentage}}%</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card ks-widget-payment-simple-amount-item ks-green">
+          <div class="payment-simple-amount-item-icon-block">
+            <span class="la la-check-square-o ks-icon"></span>
+          </div>
+
+          <div class="payment-simple-amount-item-body">
+            <div class="payment-simple-amount-item-amount">
+              <span class="ks-amount">{{data.ads_validated}}</span>
+            </div>
+            <div class="payment-simple-amount-item-description">
+              Annonces validées
+            </div>
+            <span class="ks-progress-type">{{data.ads_validated_percentage}}%</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card ks-widget-payment-simple-amount-item ks-pink">
+          <div class="payment-simple-amount-item-icon-block">
+            <span class="la la-times ks-icon"></span>
+          </div>
+
+          <div class="payment-simple-amount-item-body">
+            <div class="payment-simple-amount-item-amount">
+              <span class="ks-amount">{{data.ads_rejected}}</span>
+            </div>
+            <div class="payment-simple-amount-item-description">
+              Annonces rejetées
+            </div>
+            <span class="ks-progress-type">{{data.ads_rejected_percentage}}%</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card ks-widget-payment-simple-amount-item ks-orange">
+          <div class="payment-simple-amount-item-icon-block">
+            <span class="la la-users ks-icon"></span>
+          </div>
+
+          <div class="payment-simple-amount-item-body">
+            <div class="payment-simple-amount-item-amount">
+              <span class="ks-amount">{{data.user_count}}</span>
+            </div>
+            <div class="payment-simple-amount-item-description">
+              Inscrits
+            </div>
+            <span class="ks-progress-type">{{data.user_count_this_month}} ce mois</span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="data">
+      <div class="col-lg-6">
+        <div class="card ks-card-widget ks-widget-payment-card-rate-details">
+          <h5 class="card-header titre-categorie-nbre">
+            Répartition Vendeurs/Acheteurs
+          </h5>
+          <div class="card-block dash-no-overflow">
+            <ngx-charts-advanced-pie-chart [results]="vendeur_acheteurs">
+            </ngx-charts-advanced-pie-chart>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card ks-card-widget ks-widget-payment-card-rate-details">
+          <h5 class="card-header titre-categorie-nbre">
+
+          </h5>
+          <div class="card-block dash-no-overflow">
+            <fusioncharts [id]="id" [width]="width" [height]="height" [type]="type" [dataFormat]="dataFormat" [dataSource]="dataSource"></fusioncharts>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="data">
+      <div class="col-lg-4">
+        <div class="card ks-card-widget ks-widget-payment-card-rate-details">
+          <h6 class="card-header  titre-categorie-nbre">
+            Nombres d'annonces par pays
+          </h6>
+          <div class="card-block dash-overflow">
+            <table class="table ks-payment-card-rate-details-table">
+              <tbody>
+                <tr role="row" *ngFor="let p of data.stat_pays">
+                  <td class="ks-currency">
+                    <img src="assets/img/flags/24/{{p.pays}}.png" class="ks-flag"> {{p.pays}}
+                  </td>
+                  <td class="ks-amount">{{p.annonce_nbr}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card ks-card-widget ks-widget-payment-card-rate-details">
+          <h5 class="card-header  titre-categorie-nbre">
+            Catégories
+          </h5>
+          <div class="card-block  dash-overflow">
+            <table class="table ks-payment-card-rate-details-table">
+              <tbody>
+                <tr *ngFor="let p of data.stat_annonces">
+                  <td class="ks-currency">
+                    {{p.categorie}}
+                  </td>
+                  <td class="ks-amount"> {{p.annonce_nbr}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card ks-card-widget ks-widget-payment-card-rate-details">
+          <h5 class="card-header  titre-categorie-nbre">
+            Annonces
+          </h5>
+          <div class="card-block  dash-overflow">
+            <table class="table ks-payment-card-rate-details-table">
+              <tbody>
+                <tr>
+                  <td class="ks-amount titre-categorie-nbre">{{data.total_ads}}</td>
+                  <td class="ks-currency">
+                    <span class="titre-td">annonces soumises</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="ks-amount titre-categorie-nbre">{{data.ads_moderated}}</td>
+                  <td class="ks-currency">
+                    <span class="titre-td">annonces modérées</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="ks-amount titre-categorie-nbre">{{data.ads_validated}}</td>
+                  <td class="ks-currency">
+                    <span class="titre-td">annonces validées</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="ks-amount titre-categorie-nbre">{{data.ads_rejected}}</td>
+                  <td class="ks-currency">
+                    <span class="titre-td">annonces rejetées</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="ks-amount titre-categorie-nbre">{{data.deals_done}}</td>
+                  <td class="ks-currency">
+                    <span class="titre-td">offres conclues</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="ks-amount titre-categorie-nbre">{{data.public_msg}}</td>
+                  <td class="ks-currency">
+                    <span class="titre-td">Messages publics</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="ks-amount titre-categorie-nbre">{{data.private_msg}}</td>
+                  <td class="ks-currency">
+                    <span class="titre-td">Messages privés</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

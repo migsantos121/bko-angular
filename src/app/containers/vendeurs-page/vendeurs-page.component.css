@@ -1,0 +1,26 @@
+.jspContainer {
+  overflow: auto;
+  position: relative;
+  height: 100vh;
+  width: 100% !important;
+}
+
+.jspScrollable .jspVerticalBar {
+  opacity: 0;
+  -webkit-transition: opacity .2s ease-in;
+  /* transition: opacity .2s ease-in; */
+}
+
+.fixed-pagination{
+  position: fixed;
+  bottom: 0%;
+}
+
+.ks-navigation.ks-browse .ks-wrapper {
+  height: 100%;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.center{
+  text-align: center;
+}

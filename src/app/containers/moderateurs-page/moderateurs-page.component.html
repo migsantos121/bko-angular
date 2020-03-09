@@ -1,0 +1,60 @@
+<ngx-loading [show]="status$ | async" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<bo-header [title]="titre"></bo-header>
+
+<div class="ks-crm-contacts-container">
+  <div class="ks-crm-contacts-users-list-column">
+    <div class="column is-one-third">
+      <form class="center">
+        <div class="row">
+          <!-- <div class="col">
+            <input type="text" class="form-control" placeholder="je recherche...">
+          </div> -->
+          <div class="col">
+            <!-- <button type="submit" name="button" class="btn btn-primary" (click)="search()">Rechercher</button> -->
+            <button name="button" class="btn btn-bo pull-right custom-btn" (click)="addNewUser()">Ajouter</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <div class="ks-crm-contacts-users-list-column-table-container">
+      <table datatable class="table table-hover ks-table-cells-vertical-align-middle row-border hover">
+        <thead>
+          <tr>
+            <th>Nom complet</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of moderateurs$ | async ">
+            <td>
+              {{user.firstname }} {{user.lastname }}
+            </td>
+            <td>
+              {{user.username }}
+            </td>
+            <td>
+              {{user.role }}
+            </td>
+            <td>
+              <small class="btn btn-warning" (click)="editer(user)">
+                <i class="la la-pencil"></i>
+              </small>
+              <small class="btn btn-danger" (click)="delete(user)" *ngIf="user.user_id !== currentUserId">
+                <i class="la la-close"></i>
+              </small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<bo-moderateur-modal [user]="moderateur$ | async" (onFormSubmit)="onFormSubmit($event)" [erreur]="erreur">
+</bo-moderateur-modal>

@@ -1,0 +1,288 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<bo-header [title]="titre$"></bo-header>
+
+<div class="ks-crm-contacts-container">
+  <div class="ks-crm-contacts-users-list-column">
+    <div class="ks-crm-contacts-users-list-column-table-container">
+      <div class="column is-one-third">
+        <label class="control">Filter items
+          <input type="text" class="input" placeholder="Rechercher" [(ngModel)]="recherche">
+        </label>
+        <button class="btn btn-warning btn-sm" (click)="search()">Rechercher</button>
+        <button class="btn btn-default btn-sm" (click)="reset()">Enlever la recherche</button>
+        <button class="btn btn-bo pull-right" data-toggle="modal" data-target=".bd-example-modal-horizontal-form">Ajouter</button>
+      </div>
+
+      <table class="table table-hover ks-table-cells-vertical-align-middle ">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Titre</th>
+            <th>Pays</th>
+            <!-- <th>Auteur</th> -->
+            <th>Infos</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr role="row" *ngFor="let annonce of collections$ | async ">
+            <td>
+              <img src="{{ annonce.photo_url?.thumb }}" class="" width="50">
+            </td>
+            <td (click)="onSelectCollection(annonce)">
+              <div class="ks-name ks-annonce">
+                <span>{{ annonce.titre }}</span>
+              </div>
+              <small>{{annonce.description}}</small>
+            </td>
+            <td>
+              {{ annonce?.pays?.nom }}
+            </td>
+            <!-- <td>
+              <div class="ks-name">{{ annonce.user?.first_name }} {{ annonce.user?.last_name }}</div>
+              <small>
+                <span *ngIf="annonce?.telephone"> - ({{annonce.telephone}})</span>
+              </small>
+            </td> -->
+            <td>
+              <div class="">
+                vu: {{annonce.view_nbr}} fois
+              </div>
+              <div class="">
+                {{annonce.ads_count}} annonce(s)
+              </div>
+            </td>
+            <td>
+              <button class="btn btn-warning" (click)="setCollection(annonce)">
+                <i class="la la-pencil ks-icon"></i>
+              </button>
+              <button class="btn btn-danger" (click)="deleteCollection(annonce)">
+                <i class="ks-icon la la-close"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bd-modal-detail " tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel2" style="display: none;"
+  aria-hidden="true">
+  <div class="modal-dialog" style="min-width:600px; max-width: 800px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{(collection$ | async)?.titre }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="">
+          <p id="collectionId" hidden>{{(collection$ | async)?.id}}</p>
+          <p>{{(collection$ | async)?.description}}</p>
+          <p>Pays:
+            <strong>{{(collection$ | async)?.pays?.nom}}</strong>
+            <small *ngIf="collection?.homepage_sponsoring" class="badge badge-warning badge-sm" style="margin-left: 50px">VIP</small>
+            <strong *ngIf="collection?.homepage_sponsoring" style="margin-left: 20px">Début: {{(collection$ | async)?.start_sponsoring | date:'yyyy-MM-dd'}} - Fin: {{ getYYMMDD((collection$ | async)?.end_sponsoring) }}</strong>
+          </p>
+        </div>
+        <table class="table table-hover ks-table-cells-vertical-align-middle ">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Titre</th>
+              <th>Catégorie</th>
+              <th>Prix</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr role="row" *ngFor="let ad of (collection$ | async)?.ads ">
+              <td>
+                <img src="{{ ad.photo1?.thumb }}" class="" width="50">
+              </td>
+              <td>
+                <div class="ks-name ks-annonce">
+                  <span>{{ ad.titre }}</span>
+                </div>
+                <small>posted {{ad.date_creation | amTimeAgo }}</small>
+              </td>
+              <td>
+                <div>
+                  {{ad.categorie?.nom}}
+                </div>
+                <div class="">
+                  {{ad.pays?.nom}}
+                </div>
+              </td>
+              <td>{{ad.prix}} {{ ad.pays?.devise?.nom }}</td>
+              <td>vu: {{ad.view_nbr}} fois</td>
+              <td>
+                <button class="btn btn-danger" (click)="onDeleteAdFromCollection(ad.id)">
+                  <i class="ks-icon la la-close"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-horizontal-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Creer collection</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]='collectionForm' (ngSubmit)="onFormSubmit(collectionForm.value)">
+          <div class="container-fluid">
+            <div class="form-group row">
+              <label for="example-search-input" class="col-2 col-form-label">Titre *</label>
+              <div class="col-10">
+                <input class="form-control" formControlName="titre" type="text" id="example-search-input">
+                <label *ngIf="formErrors['titre'] != ''" class="valid-error"> {{ formErrors['titre'] }}</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="description-input" class="col-2 col-form-label">Description</label>
+              <div class="col-10">
+                <textarea class="form-control" formControlName="description" id="description-input"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="pays-input" class="col-2 col-form-label">Pays *</label>
+              <div class="col-10">
+                <select class="form-control" formControlName="pays">
+                  <option value=""></option>
+                  <option *ngFor="let p of (pays$ | async)" [value]="p.id">{{p.nom}}</option>
+                </select>
+                <label *ngIf="formErrors['pays'] != ''" class="valid-error"> {{ formErrors['pays'] }}</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="photo-input" class="col-2 col-form-label">Photo *</label>
+              <div class="col-10">
+                <input class="form-control" type="file" (change)="onFileChange($event)" #fileInput>
+                <label *ngIf="formErrors['photo'] != ''" class="valid-error"> {{ formErrors['photo'] }}</label>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-search-input" class="col-6 col-form-label">Période promotion</label>
+              <div class="col-6">
+                <div class="form-group">
+                  <input type="text" daterangepicker (selected)="selectedDate($event, daterange)" class="form-control"
+                  />
+                </div>
+                <!-- <date-picker formControlName="end_date" format="YYYY/MM/DD"></date-picker> -->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="example-search-input" class="col-6 col-form-label">Mettre sur la page d'accueil</label>
+              <div class="col-lg-6">
+                <input class="form-control" formControlName="homepage_sponsoring" type="checkbox" />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-bo" [disabled]="(status$ | async) || !collectionForm.valid">Créer</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade bd-modal-edit-form" style="z-index:5;" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel1"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" style="z-index:5;">
+    <div class="modal-content" style="z-index:5;">
+      <div class="modal-header">
+        <h5 class="modal-title">Edition collection</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #ngForm="ngForm" (ngSubmit)="onEditFormSubmit(ngForm)">
+          <div class="container-fluid">
+            <div class="form-group row">
+              <label for="example-search-input" class="col-2 col-form-label">Titre *</label>
+              <div class="col-10">
+                <input class="form-control" name="titre" [(ngModel)] = "titre" type="text" id="example-search-input">
+                <label *ngIf="editFormErrors['titre'] != ''" class="valid-error"> {{ editFormErrors['titre'] }}</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="description-input" class="col-2 col-form-label">Description</label>
+              <div class="col-10">
+                <textarea class="form-control" name="description" [(ngModel)]="description"
+                  id="description-input"></textarea>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="pays-input" class="col-2 col-form-label">Pays *</label>
+              <div class="col-10">
+                <select class="form-control" name="pays" [(ngModel)] = "pays">
+                  <option value=""></option>
+                  <option *ngFor="let p of (pays$ | async)" [value]="p.id" [selected]="p.id===editCollection?.pays?.id">{{p.nom}}</option>
+                </select>
+                <label *ngIf="editFormErrors['pays'] != ''" class="valid-error"> {{ editFormErrors['pays'] }}</label>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="photo-input" class="col-2 col-form-label">Photo *</label>
+              <div class="col-10">
+                <input class="form-control" name="photo" ngModel #photo="ngModel" type="file" (change)="onFileChangeEdit($event)" #fileInput>
+                <label *ngIf="editFormErrors['photo'] != ''" class="valid-error"> {{ editFormErrors['photo'] }}</label>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="example-search-input" class="col-6 col-form-label">Période promotion</label>
+              <div class="col-6">
+                <div class="form-group">
+                  <input type="text" daterangepicker (selected)="selectedDate($event, editdaterange)" class="form-control" value="{{ editFormDateRange }}"
+                  />
+                </div>
+                <!-- <date-picker formControlName="end_date" format="YYYY/MM/DD"></date-picker> -->
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="homepage-sponsoring" class="col-6 col-form-label">Mettre sur la page d'accueil</label>
+              <div class="col-6">
+                <input class="form-control" name="homepage_sponsoring" ngModel #homepage_sponsoring="ngModel" type="checkbox" id="homepage-sponsoring" [(ngModel)]="edithomepagesponsoring"/>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-bo">Mettre à jour</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

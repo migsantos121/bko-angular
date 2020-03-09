@@ -1,0 +1,133 @@
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<bo-header [title]="titre$"></bo-header>
+<div class="ks-tickets-page">
+  <div class="ks-navigation ks-browse ks-scrollable jspScrollable" data-auto-height="" style="height: 85vh; overflow: hidden; padding: 0px; width: 249px;"
+    tabindex="0">
+
+    <div class="jspContainer" style="width: 100%; height: 85vh">
+      <div class="jspPane" style="padding: 0px; top: 0px; width: 238px;">
+        <div class="ks-wrapper">
+          <h5 class="card-header">
+            Recherche
+          </h5>
+          <form [formGroup]='searchForm' (ngSubmit)="search(searchForm.value)">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Je recherche" [(ngModel)]="recherche" formControlName="keyword">
+            </div>
+            <div class="form-group">
+              <label for="contact-email">Pays</label>
+              <select formControlName="pays" class="selectpicker form-control images select2-hidden-accessible" tabindex="-1" aria-hidden="true">
+                <option value=""></option>
+                <option *ngFor="let p of pays$ | async" [value]="p.id">
+                  {{p.nom}}
+                </option>
+              </select>
+
+            </div>
+            <div class="form-group">
+              <label for="subject">Dernière Connexion Moins de X Jours</label>
+              <input type="number" formControlName="last_signin" class="form-control" placeholder="-1">
+            </div>
+            <div class="form-group">
+              <label for="subject">Inscrits Moins de X Jours</label>
+              <input type="number" formControlName="inscrit_moins_de" class="form-control" placeholder="-1">
+            </div>
+            <div class="form-group">
+              <label for="subject">Dernier Posting Moins de X Jours</label>
+              <input type="number" formControlName="last_posting" class="form-control" placeholder="-1">
+            </div>
+            <div class="form-group">
+              <label for="subject">Nombre d'annonces >=</label>
+              <input type="number" formControlName="nbre_annonces" class="form-control" placeholder="-1">
+            </div>
+            <div class="form-group">
+              <label for="subject">Nombre de produits vendus >=</label>
+              <input type="number" formControlName="nbre_produits_vendus" class="form-control" placeholder="-1">
+            </div>
+
+
+            <div class="form-group">
+              <div class="ks-actions">
+                <button class="btn btn-bo btn-sm" type="submit">Rechercher</button>
+                <button class="btn btn-default btn-sm" (click)="reset()">Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="jspVerticalBar">
+        <div class="jspCap jspCapTop"></div>
+        <div class="jspTrack" style="height: 90vh">
+          <div class="jspDrag" style="height: 90vh">
+            <div class="jspDragTop"></div>
+            <div class="jspDragBottom"></div>
+          </div>
+        </div>
+        <div class="jspCap jspCapBottom"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ks-tickets">
+
+    <div class="ks-body ks-scrollable jspScrollable" data-auto-height="" style=" overflow: hidden; padding: 0px; width: 100%"
+      tabindex="0">
+
+      <div class="jspContainer" style="width: 100%;height: 85vh;overflow: hidden;">
+        <div class="jspPane" style="padding: 0px; top: 0px; width: 100%; height: 85vh;overflow: auto;">
+          <div class="main-panel">
+            <div class="card panel panel-default panel-table">
+              <div class="card-block">
+                <table class="table table-hover stacktable small-only">
+                  <tbody>
+                    <tr *ngFor="let vendeur of vendeurs ">
+                      <td scope="row">
+                        <a [routerLink]="[ '/vendeurs', vendeur.id] ">{{ vendeur?.first_name }} {{ vendeur?.last_name }} </a>
+                        <br>
+                        <small>
+                          {{ vendeur?.address }}
+                        </small>
+                      </td>
+                      <td>{{ vendeur?.telephone }}</td>
+                      <td>{{ vendeur?.pays?.nom }}</td>
+                      <td>{{ vendeur?.ads_count }}
+                        <small>annonces postées</small>
+                      </td>
+                      <td>
+                        <small>
+                          <span class="ks-time ">Username: {{ vendeur?.username }}</span>
+                        </small>
+                        <br/>
+                        <small>
+                          <span class="ks-time ">Derniére connexion {{ vendeur?.last_login | amDateFormat: 'DD/MM/YYYY HH:mm' }}</span>
+                        </small>
+                        <br/>
+                        <small>
+                          <span class="ks-time ">Inscrit depuis {{ vendeur?.member_since | amDateFormat: 'DD/MM/YYYY HH:mm' }}</span>
+                        </small>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="5">
+                        <a (click)="getPage() " *ngIf="next " class="btn btn-bo btn-sm center">Voir Plus</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="jspVerticalBar ">
+          <div class="jspCap jspCapTop "></div>
+          <div class="jspTrack " style="height: 504px; ">
+            <div class="jspDrag " style="height: 290px; ">
+              <div class="jspDragTop "></div>
+              <div class="jspDragBottom "></div>
+            </div>
+          </div>
+          <div class="jspCap jspCapBottom "></div>
+        </div>
+      </div>
+    </div>
+  </div>

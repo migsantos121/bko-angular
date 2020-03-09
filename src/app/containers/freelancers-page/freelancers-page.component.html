@@ -1,0 +1,61 @@
+<ngx-loading [show]="status$ | async" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<bo-header [title]="titre"></bo-header>
+
+<div class="ks-crm-contacts-container">
+  <div class="ks-crm-contacts-users-list-column">
+
+    <div class="ks-crm-contacts-users-list-column-table-container">
+
+      <table datatable class="table table-hover ks-table-cells-vertical-align-middle row-border hover">
+        <thead>
+          <tr>
+            <th>Nom complet</th>
+            <th>Username</th>
+            <th>Country</th>
+            <th>Stat</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="!isFreelancer()">
+          <tr role="row" *ngFor="let user of freelancers$ | async ">
+            <td>
+              {{user.firstname }} {{user.lastname }}
+            </td>
+            <td>
+              {{user.username }}
+            </td>
+            <td>
+              {{convertCountryCodeToName(user.country)}}
+            </td>
+            <td>
+              <small (click)="editer(user)" style="cursor: pointer;">Stat</small>
+            </td>
+              <!-- <small class="btn btn-warning" (click)="editer(user)">
+                <i class="la la-pencil"></i>
+              </small> -->
+          </tr>
+        </tbody>
+        <tbody *ngIf="isFreelancer()">
+          <tr role="row" *ngIf="freelancer$ | async; let user">
+            <td>
+              {{user.data.firstname }} {{user.data.lastname }}
+            </td>
+            <td>
+              {{user.data.username }}
+            </td>
+            <td>
+              {{convertCountryCodeToName(user.data.country)}}
+            </td>
+            <td>
+              <small (click)="editer(user.data)" style="cursor: pointer;">Stat</small>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+
+<bo-stat-modal [user]="freelancer$ | async" (onFormSubmit)="onFormSubmit($event)" [erreur]="erreur">
+</bo-stat-modal>

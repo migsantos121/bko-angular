@@ -1,0 +1,261 @@
+<div class="modal fade slide-up add-contact-form-modal" id="add-contact-form-modal" tabIndex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- <ngx-loading [show]="status"></ngx-loading> -->
+
+      <div class="modal-header">
+        <h5 class="modal-title">Edition annonce</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="display_editImage = 0">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="k-block">
+
+          <div class="bloc_photo_ad">
+
+            <div class="item">
+              <img src="{{annonce?.photo1?.normal}}" id="photo1" src-fallback="{{ placeholder }}" alt="">
+              <div class="action">
+                <button type="button" name="button" class="btn-warning" (click)="updateSource(1); display_editImage = 0;">
+                  <i class="ks-icon la la-edit"></i>
+                </button>
+                <button type="button" name="button" class="btn-danger" *ngIf="annonce?.photo1?.normal" (click)="deleteImage(1); display_editImage = 0;">
+                  <i class="ks-icon la la-close"></i>
+                </button>
+                <button type="button" name="button" class="btn-warning" *ngIf="annonce?.photo1?.normal" (click)="editImage(1)">
+                  Edit Image
+                </button>
+
+              </div>
+            </div>
+            <div class="item">
+              <img id="photo2" src="{{annonce?.photo2?.normal}}" src-fallback="{{ placeholder }}" alt="">
+              <div class="action">
+                <button type="button" name="button" class="btn-warning" (click)="updateSource(2)">
+                  <i class="ks-icon la la-edit"></i>
+                </button>
+                <button type="button" name="button" *ngIf="annonce?.photo2?.normal" class="btn-danger" (click)="deleteImage(2)">
+                  <i class="ks-icon la la-close"></i>
+                </button>
+                <button type="button" name="button" class="btn-warning" *ngIf="annonce?.photo2?.normal" (click)="editImage(2)">
+                  Edit Image
+                </button>
+              </div>
+            </div>
+            <div class="item">
+              <img id="photo3" src="{{annonce?.photo3?.normal}}" src-fallback="{{ placeholder }}" alt="">
+              <div class="action">
+                <button type="button" name="button" class="btn-warning" (click)="updateSource(3)">
+                  <i class="ks-icon la la-edit"></i>
+                </button>
+                <button type="button" name="button" *ngIf="annonce?.photo3?.normal" class="btn-danger" (click)="deleteImage(3)">
+                  <i class="ks-icon la la-close"></i>
+                </button>
+                <button type="button" name="button" class="btn-warning" *ngIf="annonce?.photo3?.normal" (click)="editImage(3)">
+                  Edit Image
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="display_editImage == 1">
+            <bo-edit-image [imageUrl] = "annonce?.photo1?.normal" (cropped) = "onImageCropped($event)" (close) = "onImageEditClose()" (save) = "onImageSave($event)">
+            </bo-edit-image>
+          </div>
+
+          <div *ngIf="display_editImage == 2">
+            <bo-edit-image [imageUrl] = "annonce?.photo2?.normal" (cropped) = "onImageCropped($event)" (close) = "onImageEditClose()" (save) = "onImageSave($event)">
+            </bo-edit-image>
+          </div>
+
+          <div *ngIf="display_editImage == 3">
+            <bo-edit-image [imageUrl] = "annonce?.photo3?.normal" (cropped) = "onImageCropped($event)" (close) = "onImageEditClose()" (save) = "onImageSave($event)">
+            </bo-edit-image>
+          </div>
+
+          <div [style.display]="display_updload==0 ? 'none' : 'block'">
+            <!-- <input type="file" (change)="onFileChange($event)" #fileInput /> -->
+            <input id="inputImage" type="file" accept="image/*" (change)="onImageChange($event)" />
+
+            <button type="button" class="btn btn-success btn-sm" (click)="submitImage.emit(imageForm.value)">
+              Upload
+            </button>
+            <button class="btn btn-default btn-sm" (click)="display_updload==0 ? display_updload=1 : display_updload=0">Fermer</button>
+          </div>
+        </div>
+
+        <div class="ks-block">
+          <div class="" id="">
+            <form [formGroup]='editForm' (ngSubmit)="onEditFormSubmit(editForm.value)">
+              <div class="row">
+                <div class="col form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Titre
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <input type="text" class="form-control" id="default-input" formControlName="titre">
+                </div>
+                <div class="col form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Prix
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <input type="text" class="form-control" id="default-input" formControlName="prix">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="fl-flex-label">
+                  <label class="fl-label" for="fl-label-526968995" style="left: 16px; right: 15px;">Description</label>
+                </div>
+                <textarea rows="5" class="form-control" placeholder="" formControlName="description">{{annonce?.description}}</textarea>
+              </div>
+
+              <div class="row">
+                <div class="col form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Catégorie
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <select class="form-control" formControlName="categorie">
+                    <!-- WORKING -->
+                    <option *ngFor="let item of categories " [ngValue]="item.id" [selected]="item.id===annonce?.categorie?.id">{{item.nom}}</option>
+                    <!-- NOT WORKING -->
+                    <ng-template ngFor let-item [ngForOf]="categories">
+                      <optgroup *ngIf="item.childs" label="{{item.nom}}">
+                        <option *ngFor="let child of item.childs" [ngValue]="child.id" [selected]="child.id===annonce?.categorie?.id">{{child.nom}}</option>
+                      </optgroup>
+                      <option *ngIf="!item.childs" [ngValue]="item.id" [selected]="item.id===annonce?.categorie?.id">{{item.nom}}</option>
+                    </ng-template>
+                  </select>
+                </div>
+                <div class="col form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Deal
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <select class="form-control" formControlName="deal_type">
+                    <option *ngFor="let item of customType.TypeDeal | keys" [value]="item.key">{{item.value | titlecase}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div [style.display]="deal_type_display==1 ? 'block': 'none' ">
+
+                <div class="form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">% de reduction
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <input type="text" class="form-control" id="default-input" formControlName="amount_discount">
+                </div>
+              </div>
+              <div [style.display]="deal_type_display==3 ? 'block' : 'none'">
+                <div class="form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Texte personnaliser
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <input type="text" class="form-control" id="default-input" formControlName="deal_custom">
+                </div>
+              </div>
+              <div [style.display]="deal_type_display!= 0 ? 'block': 'none' ">
+                <div class="form-group row">
+                  <label class="col-sm-2 form-control-label" for="default-input">Période deal
+                    <span class="fl-required">*</span>
+                  </label>
+                  <div class="col-sm-10">
+                    <input type="text" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control" value = "{{ protomotionDate }}"
+                    />
+                    <label *ngIf="formErrors['promotion_date'] != ''" class="valid-error">
+                        {{ formErrors['promotion_date'] }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="form-group row">
+                  <div class="col-sm-4 ks-color-status__deleted" >
+                    <label *ngIf="annonce?.etat_annonce == 0">Etat Annonce: Disponible</label>
+                    <label *ngIf="annonce?.etat_annonce == 1">Etat Annonce: En Negotiation</label>
+                    <label *ngIf="annonce?.etat_annonce == 2">Etat Annonce: Vendue</label>
+                  </div>
+                  <div class="col-sm-3 ks-color-status__deleted">
+                    <label *ngIf="annonce?.deleted">Supprimé: Oui</label>
+                    <label *ngIf="!annonce?.deleted">Supprimé: Non</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="fl-flex-label">
+                  <label class="fl-label" for="fl-label-526968995" style="left: 16px; right: 15px;">Message modération</label>
+                </div>
+                <textarea class="form-control" placeholder="" formControlName="message_moderation">{{annonce?.message_moderation}}</textarea>
+              </div>
+              <div class="form-group" *ngIf="url$ !== 0">
+                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <section>
+          <section class="ks-crm-contacts-user-view-column-user-info-controls">
+            <span class="btn btn-success btn-sm" (click)="moderate(1);display_editImage = 0;" *ngIf="annonce?.etat != 1 && url$ !== 4">
+              Valider
+            </span>
+            <span class="btn btn-danger btn-sm" (click)="moderate(2);display_editImage = 0;" *ngIf="annonce?.etat != 2 && url$ !== 4">
+              Rejeter
+            </span>
+            <span class="btn btn-success btn-sm" (click)="moderate(4);display_editImage = 0;" *ngIf="url$ === 4">
+              Rejeter
+            </span>
+            <a href="/annonces/{{annonce.id}}/edit" *ngIf="annonce" class="label label-warning">
+              <span class="la la-edit ks-icon"></span> Edition compléte
+            </a>
+            <span class="btn btn-default btn-sm" (click)="generateLink.emit(annonce.id);display_editImage = 0;" *ngIf="annonce?.etat == 1">
+              Créer un lien
+            </span>
+            <span *ngIf="annonce?.etat == 1" class="btn btn-primary-outline btn-sm" (click)="toogleCollection();display_editImage = 0;">
+              <span *ngIf="!showCollection">Ajouter à une collection</span>
+              <span *ngIf="showCollection">Masquer collection</span>
+            </span>
+
+          </section>
+          <section *ngIf="showCollection">
+            <form [formGroup]='collectionForm' (ngSubmit)="onCollectionFormSubmit.emit(collectionForm.value)">
+              <div class="modal-body">
+                <div class="container-fluid">
+                  <div class="form-group row">
+                    <label for="example-search-input" class="col-2 col-form-label">Collection</label>
+                    <input type="hidden" formControlName="ad_id" value="annonce.id">
+                    <div class="col-10">
+                      <select class="form-control" formControlName="collection">
+                        <option *ngFor="let item of collections" [value]="item.id">{{item.pays.nom}} - {{item.titre}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="offset-sm-2 col-sm-10">
+                      <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </section>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

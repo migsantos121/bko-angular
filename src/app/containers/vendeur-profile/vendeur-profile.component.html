@@ -1,0 +1,257 @@
+<bo-header [title]="titre$"></bo-header>
+<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<div class="ks-social-profile">
+
+  <div class="ks-social-profile-body">
+    <div class="card panel panel-default">
+      <h5 class="card-header">
+        About
+        <div class="ks-user-list-view-header-control pull-right">
+          <div class="btn btn-success btn-sm" (click)="edit()">Modifier</div>
+        </div>
+      </h5>
+      <div class="card-block">
+        <div class="ks-item">
+          <span class="titre">Username</span>
+          <span>{{(vendeur$ | async)?.username}}</span>
+        </div>
+        <div class="ks-item">
+          <span class="titre">Nom complet</span>
+          <span>{{(vendeur$ | async)?.first_name}} {{(vendeur$ | async)?.last_name}}</span>
+        </div>
+        <div class="ks-item">
+          <span class="titre">Téléphone</span>
+          <span>{{(vendeur$ | async)?.telephone}}</span>
+        </div>
+        <div class="ks-item">
+          <span class="titre">Adresse</span>
+          <span>{{(vendeur$ | async)?.address}}</span>
+        </div>
+        <div class="ks-item">
+          <span class="titre">Membre depuis</span>
+          <span>{{(vendeur$ | async)?.member_since | amDateFormat: 'DD/MM/YYYY'}}</span>
+        </div>
+        <div class="ks-item">
+          <span class="titre">Derniere connexion</span>
+          <span>{{(vendeur$ | async)?.last_login | amDateFormat: 'DD/MM/YYYY HH:mm'}}</span>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="ks-social-profile-body">
+      <div class="card panel panel-default">
+        <h5 class="card-header">Annonces</h5>
+        <div class="column is-one-third">
+          <form [formGroup]='searchForm' (ngSubmit)="search()"  class="center">
+            <div class="row">
+              <div class="col">
+                <input type="text" class="form-control" placeholder="Rechercher" formControlName="keyword">
+              </div>
+              <div class="col">
+                <select class="form-control" formControlName="categorie">
+                  <option value="">Choisir une catégorie</option>
+                  <option *ngFor="let item of categories$ | async" [value]="item.id">{{item.nom}}</option>
+                  <option value="all">Toutes les catégories</option>
+                </select>
+              </div>
+              <div class="col">
+                <select class="form-control" formControlName="statut">
+                  <option value="">Choisir un statut</option>
+                   <option *ngFor="let item of status" [value]="item.id">{{item.nom}}</option>
+                   <option value="all">Tous les statuts</option>
+                </select>
+              </div>
+              <div class="col">
+                <!-- <input type="hidden" formControlName="etat" [value]="url$"> -->
+                <button type="submit" name="button" class="btn btn-primary">Rechercher</button>
+              </div>
+              <div class="col">
+                <button type="button" class="btn btn-success" (click)="loadAnnonces()">Toutes les annonces</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+        <div class="ks-body" style="overflow: hidden; padding: 0px; width: 100%" tabindex="0">
+          <div class="main-panel">
+            <div class="card panel panel-default panel-table">
+              <div class="card-block">
+                <table class="table table-hover stacktable small-only">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Activité</th>
+                      <th>Prix</th>
+                      <th>Catégorie</th>
+                      <th>Pays</th>
+                      <th>Statut</th>
+                      <th>Nbre vue(s)</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr role="row" *ngFor="let annonce of annonces$ | async ; let i = index" [class.active]="i == selectedRow">
+                      <td>
+                        <img src="{{ annonce?.photo1?.thumb }}" class="" width="50">
+                      </td>
+                      <td (click)="onSelectAnnonce(annonce)">
+                        <div class="ks-name ks-annonce click">
+                            <span class="ks-color-titre"> {{ annonce?.titre }}</span>
+                            <span class="ks-color-id"> [{{ annonce?.id }}]</span>
+                        </div>
+                        <small>posté le {{annonce?.date_creation | amDateFormat: 'DD/MM/YYYY HH:mm' }}</small>
+                      </td>
+                      <td>
+                        <div class="ks-name">
+                            <span class="ks-progress-type">{{ annonce?.prix }} {{ annonce?.pays?.devise?.nom }}</span>
+                        </div>
+                        <small>Type
+                          <span class="ks-progress-type">{{ annonce?.etat_produit | etatProduit }} </span>
+                        </small>
+                      </td>
+                      <td>
+                        <div class="ks-email">
+                          <a href="#" class="ks-color-info">{{ annonce?.categorie?.nom }}</a>
+                        </div>
+                      </td>
+                      <td>
+                        {{ annonce?.pays?.nom }}
+                      </td>
+                      <td>
+                        <span class="ks-color-{{annonce?.etat}}">{{annonce?.etat | etatAnnonce }}</span>
+
+                        <div *ngIf="annonce?.deleted || annonce?.etat_annonce == 2">
+                          <span *ngIf="annonce?.deleted && annonce?.etat_annonce == 2; else other" class="ks-color-status__deleted">
+                            [Supprimée, Vendue]
+                          </span>
+                          <ng-template #other>
+                            <span *ngIf="annonce?.deleted" class="ks-color-status__deleted">
+                              [Supprimée]
+                            </span>
+                            <span *ngIf="annonce?.etat_annonce == 2" class="ks-color-status__deleted">
+                              [Vendue]
+                            </span>
+                          </ng-template>
+                        </div>
+                      </td>
+                      <td>vu: {{annonce?.view_nbr}} fois</td>
+                      <td>
+                        <small class="badge badge-cranberry" *ngIf="annonce?.is_sponsored">Sponsorisé</small>
+                        <small class="badge badge-primary" *ngIf="annonce?.is_discount">En promotion</small>
+                        <small class="badge badge-warning" *ngIf="annonce?.homepage_sponsoring">VIP</small>
+                        <small class="badge badge-warning" *ngIf="annonce?.all_country">All country</small>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="5">
+                        <a (click)="getPreviousPage()" *ngIf="prev" class="btn btn-bo btn-sm">Précédent</a>
+                        Page {{current_page}} sur {{total}}
+                        <a (click)="getPage()" *ngIf="next" class="btn btn-bo btn-sm click">Suivant</a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade slide-up edit-vendeur-form-modal" id="edit-vendeur-form-modal" tabIndex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editer vendeur</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="ks-block">
+          <form [formGroup]='editForm' (ngSubmit)="onEditFormSubmit(editForm.value)">
+            <div class="form-group">
+              <div class="fl-flex-label fl-collapsed fl-background">
+                <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Prénom
+                  <span class="fl-required">*</span>
+                </label>
+              </div>
+              <input type="text" class="form-control" id="default-input" formControlName="first_name">
+            </div>
+            <div class="form-group">
+              <div class="fl-flex-label fl-collapsed fl-background">
+                <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Nom
+                  <span class="fl-required">*</span>
+                </label>
+              </div>
+              <input type="text" class="form-control" id="default-input" formControlName="last_name">
+            </div>
+            <div class="form-group">
+              <div class="fl-flex-label fl-collapsed fl-background">
+                <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Telephone
+                  <span class="fl-required">*</span>
+                </label>
+              </div>
+              <input type="text" class="form-control" id="default-input" formControlName="telephone">
+            </div>
+            <div class="form-group">
+              <div class="fl-flex-label">
+                <label class="fl-label" for="fl-label-526968995" style="left: 16px; right: 15px;">Adresse</label>
+              </div>
+              <textarea class="form-control" placeholder="" formControlName="address"></textarea>
+            </div>
+            <div class="form-group">
+              <div class="fl-flex-label fl-collapsed fl-background">
+                <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Pays
+                  <span class="fl-required">*</span>
+                </label>
+              </div>
+              <select class="form-control" formControlName="id_pays">
+                <option *ngFor="let p of pays$ | async" [value]="p.id">
+                  {{p.nom}}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <div class="fl-flex-label fl-collapsed fl-background">
+                <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Type
+                  <span class="fl-required">*</span>
+                </label>
+              </div>
+              <select class="form-control" formControlName="id_type">
+                <option [value]=""></option>
+                <option [value]="0">Professionel</option>
+                <option [value]="1">Particulier</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div class="fl-flex-label fl-collapsed fl-background">
+                <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Actif ?
+                  <span class="fl-required">*</span>
+                </label>
+              </div>
+              <input type="checkbox" formControlName="is_active" checked>
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<bo-annonce-edit-modal [url$]="url$" [deal_type_display]="deal_type_display" [annonce]="annonce$ | async" [categories]="categories$ | async"
+  [collections]="collections$ | async" [placeholder]="placeholder" [pays]="pays$ | async" [status]="status$ | async" (submitImage)="submitImage($event)"
+  (deletePhoto)="deletePhoto($event)" (generateLink)="generateLink($event)" (onFormSubmit)="onFormSubmit($event)" (moderateAd)="moderateAd($event)"
+  (onCollectionFormSubmit)="onCollectionFormSubmit($event)" [vendeur]="true">
+</bo-annonce-edit-modal>

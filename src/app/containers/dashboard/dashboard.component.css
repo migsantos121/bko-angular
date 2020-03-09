@@ -1,0 +1,26 @@
+.titre-td{
+  margin-left: 10px;
+}
+
+.dash-overflow{
+  height: 450px;
+  overflow-x: auto;
+}
+
+.dash-no-overflow{
+  height: 450px;
+  overflow-x: hidden;
+}
+.titre-categorie-nbre{
+  color: #ff9e16;
+}
+
+#container {
+	min-width: 310px;
+	max-width: 800px;
+	margin: 0 auto
+}
+
+chart {
+  display: block;
+}

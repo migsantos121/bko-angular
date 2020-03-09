@@ -1,0 +1,139 @@
+<ngx-loading [show]="status$ | async" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<bo-header [title]="titre$"></bo-header>
+<div class="ks-tabs-container ks-tabs-default ks-tabs-no-separator ks-full ks-light">
+  <ul class="nav ks-nav-tabs">
+    <li class="nav-item" (click)="getAdList(0)">
+      <a class="nav-link" [ngClass]="(filtre$ === 0 || filtre$ === null) ? 'active' : '' ">Toutes les annonces
+        <span class="badge badge-warning">{{ (stats$ | async)?.valider }}</span>
+      </a>
+    </li>
+    <li class="nav-item" (click)="getAdList(1)">
+      <a class="nav-link" [ngClass]="filtre$ === 1 ? 'active' : '' ">Mises en avant (en cours)
+        <span class="badge badge-success">{{ (stats$ | async)?.en_cours }}</span>
+      </a>
+    </li>
+    <li class="nav-item" (click)="getAdList(2)">
+      <a class="nav-link" [ngClass]="filtre$ === 2 ? 'active' : '' ">Mises en avant (programmée)
+        <span class="badge badge-danger">{{ (stats$ | async)?.programmer }}</span>
+      </a>
+    </li>
+  </ul>
+</div>
+<div class="ks-crm-contacts-container">
+  <div class="ks-crm-contacts-users-list-column">
+    <div class="column is-one-third">
+      <form [formGroup]='searchForm' (ngSubmit)="search()" class="center">
+        <div class="row">
+          <div class="col">
+            <label>
+              <input type="text" class="form-control" placeholder="Rechercher" formControlName="keyword">
+            </label>
+          </div>
+          <div class="col">
+            <select class="form-control" formControlName="categorie">
+              <option value="">Choisir une catégorie</option>
+              <option *ngFor="let item of categories$ | async" [value]="item.id">{{item.nom}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <select class="form-control" formControlName="pays">
+              <option value="">Choisir un pays</option>
+              <option *ngFor="let item of pays$ | async" [value]="item.id">{{item.nom}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <input type="hidden" formControlName="filter" [value]="filtre$">
+            <button type="submit" name="button" class="btn btn-primary btn-sm">Rechercher</button>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="ks-crm-contacts-users-list-column-table-container">
+
+      <table class="table table-hover ks-table-cells-vertical-align-middle ">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Titre</th>
+            <th>Prix</th>
+            <th>Categorie</th>
+            <th *ngIf="filtre$ !== 0">Période</th>
+            <th>Pays</th>
+            <th>Auteur</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr role="row" *ngFor="let annonce of annonces$ | async ; let i = index" [class.active]="i == selectedRow">
+            <td>
+              <img src="{{ annonce?.photo1?.thumb }}" class="" width="70">
+            </td>
+            <td>
+              <div class="ks-name ks-annonce">
+                <span>{{ annonce?.titre }}</span>
+              </div>
+              <small>
+                posté le {{annonce?.date_creation | amDateFormat: 'DD/MM/YYYY HH:mm' }}, vu: {{annonce?.view_nbr}} fois
+              </small>
+              <small class="badge badge-cranberry badge-sm" *ngIf="annonce?.is_sponsored">Sponsorisé</small>
+              <small class="badge badge-primary badge-sm" *ngIf="annonce?.is_discount">En promotion</small>
+              <small class="badge badge-warning badge-sm" *ngIf="annonce?.homepage_sponsoring">VIP</small>
+              <small class="badge badge-warning badge-sm" *ngIf="annonce?.all_country">All country</small>
+
+            </td>
+            <td>
+              <div class="ks-name">
+                <small class="ks-progress-type">{{ annonce?.prix }} {{ annonce?.pays?.devise?.nom }}</small>
+              </div>
+              <small>Type
+                <span class="ks-progress-type">{{annonce?.type_annonce | typeAnnonce }} </span>
+              </small>
+            </td>
+            <td>
+              <div class="ks-email">
+                <a href="#" class="ks-color-info">{{ annonce?.categorie?.nom }}</a>
+              </div>
+            </td>
+            <td *ngIf="filtre$ !== 0">
+              Du {{ annonce?.start_sponsoring | amDateFormat:'DD/MM/YYYY' }} au {{ annonce?.end_sponsoring | amDateFormat:'DD/MM/YYYY'
+              }}
+            </td>
+            <td>
+              {{ annonce?.pays?.nom }}
+            </td>
+            <td>
+              <div class="ks-name">{{ annonce?.user.first_name }} {{ annonce?.user.last_name }} </div>
+              <small>{{annonce?.ad_nbr}} annonce(s) -
+                <span *ngIf="annonce?.telephone"> - ({{annonce?.telephone}})</span>
+              </small>
+            </td>
+            <td>
+              <button *ngIf="filtre$ === 0" class="btn btn-bo btn-sm" (click)="onSelectAnnonce(annonce); ">Promouvoir</button>
+              <button *ngIf="filtre$ === 1" class="btn btn-danger btn-sm" (click)="stopPromoting(annonce); ">Arreter</button>
+              <button *ngIf="filtre$ === 2" class="btn btn-danger btn-sm" (click)="cancelPromoting(annonce); ">Annuler</button>
+              <button *ngIf="filtre$ === 1" class="btn btn-primary btn-sm" (click)="rePromote(annonce);">Reprogrammer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="has-text-centered pull-right navigation">
+        <label class="control">
+          <input type="text" class="input" placeholder="Aller à la page" [(ngModel)]="page" />
+          <button type="button" name="button" class="btn btn-primary btn-sm" (click)="goToPage()">Aller</button>
+        </label>
+        <p style="display: inline">
+          <a (click)="getPreviousPage()" *ngIf="prev" class="btn btn-bo btn-sm">Précédent</a>
+          Page {{current_page}} sur {{total}}
+          <a (click)="getPage()" *ngIf="next" class="btn btn-bo btn-sm click">Suivant</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<bo-premium-modal [annonce]="annonce$ | async" (onFormSubmit)="onFormSubmit($event)">
+</bo-premium-modal>

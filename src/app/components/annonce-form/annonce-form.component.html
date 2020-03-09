@@ -1,0 +1,408 @@
+<div class="row">
+  <div class="col-lg-8 offset-lg-2 ks-panels-column-section">
+
+    <div class="card">
+      <div class="card-block">
+        <h5 class="card-title"></h5>
+        <div class="row">
+
+          <div class="col item">
+            <img src="{{annonce?.photo1?.normal}}" id="photo1" src-fallback="{{ placeholder }}" alt="">
+            <div class="action">
+              <button type="button" name="button" class="btn-warning" (click)="updateSource(1)">
+                <i class="ks-icon la la-edit"></i>
+              </button>
+              <button type="button" name="button" class="btn-danger" *ngIf="annonce?.photo1?.normal" (click)="deletePhoto(1)">
+                <i class="ks-icon la la-close"></i>
+              </button>
+              <button type="button" name="button" class="btn-warning" *ngIf="annonce?.photo1?.normal" (click)="editImage(1)">
+                Edit Image
+              </button>
+            </div>
+          </div>
+          <div class="col item">
+            <img id="photo2" src="{{annonce?.photo2?.normal}}" src-fallback="{{ placeholder }}" alt="">
+            <div class="action">
+              <button type="button" name="button" class="btn-warning" (click)="updateSource(2)">
+                <i class="ks-icon la la-edit"></i>
+              </button>
+              <button type="button" name="button" *ngIf="annonce?.photo2?.normal" class="btn-danger" (click)="deletePhoto(2)">
+                <i class="ks-icon la la-close"></i>
+              </button>
+              <button type="button" name="button" class="btn-warning" *ngIf="annonce?.photo2?.normal" (click)="editImage(2)">
+                Edit Image
+              </button>
+            </div>
+          </div>
+          <div class="col item">
+            <img id="photo3" src="{{annonce?.photo3?.normal}}" src-fallback="{{ placeholder }}" alt="">
+            <div class="action">
+              <button type="button" name="button" class="btn-warning" (click)="updateSource(3)">
+                <i class="ks-icon la la-edit"></i>
+              </button>
+              <button type="button" name="button" *ngIf="annonce?.photo3?.normal" class="btn-danger" (click)="deletePhoto(3)">
+                <i class="ks-icon la la-close"></i>
+              </button>
+              <button type="button" name="button" class="btn-warning" *ngIf="annonce?.photo3?.normal" (click)="editImage(3)">
+                Edit Image
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="display_editImage == 1">
+          <bo-edit-image [imageUrl] = "annonce?.photo1?.normal" (cropped) = "onImageCropped($event)" (close) = "onImageEditClose()" (save) = "onImageSave($event)">
+          </bo-edit-image>
+        </div>
+
+        <div *ngIf="display_editImage == 2">
+          <bo-edit-image [imageUrl] = "annonce?.photo2?.normal" (cropped) = "onImageCropped($event)" (close) = "onImageEditClose()" (save) = "onImageSave($event)">
+          </bo-edit-image>
+        </div>
+
+        <div *ngIf="display_editImage == 3">
+          <bo-edit-image [imageUrl] = "annonce?.photo3?.normal" (cropped) = "onImageCropped($event)" (close) = "onImageEditClose()" (save) = "onImageSave($event)">
+          </bo-edit-image>
+        </div>
+
+        <div [style.display]="display_updload==0 ? 'none' : 'block'" class="center-form">
+          <br>
+          <input id="inputImage" type="file" accept="image/*" (change)="onImageChange($event)" />
+          <button type="button" class="btn btn-success btn-sm" (click)="submitImage.emit(imageForm.value)">
+            <span class="ks-icon la la-upload"></span> Upload
+          </button>
+        </div>
+        <hr>
+
+        <form [formGroup]="form" role="form" (ngSubmit)="submitForm(form)">
+
+          <div class="form-group row">
+            <label for="default-input" class="col-sm-2 form-control-label">Titre</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" formControlName="titre" placeholder="Un titre">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="disabled-input" class="col-sm-2 form-control-label">Description</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" formControlName="description" placeholder="Description" rows="10"></textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col">
+              <label for="active-input" class="form-control-label">Prix</label>
+              <div class="">
+                <input type="text" class="form-control active" formControlName="prix" placeholder="5 000">
+              </div>
+            </div>
+            <div class="form-group col">
+              <label for="active-input" class="form-control-label">Telephone</label>
+              <div class="">
+                <input type="text" class="form-control active" formControlName="telephone" placeholder="+....">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Catégorie</label>
+              <div>
+                <!-- <select class="form-control" formControlName="categorie_id">
+                  <option value=""></option>
+                  <option *ngFor="let cat of categories" [value]="cat.id" [selected]="cat.id===annonce?.categorie?.id">
+                    {{cat.nom}}
+                  </option>
+                </select> -->
+                <select class="form-control" formControlName="categorie">
+                  <!-- WORKING -->
+                  <option *ngFor="let item of categories" [ngValue]="item.id" [selected]="item.id===annonce?.categorie?.id">{{item.nom}}</option>
+                  <!-- NOT WORKING -->
+                  <ng-template ngFor let-item [ngForOf]="categories">
+                    <optgroup *ngIf="item.childs" label="{{item.nom}}">
+                      <option *ngFor="let child of item.childs" [ngValue]="child.id" [selected]="child.id===annonce?.categorie?.id">{{child.nom}}</option>
+                    </optgroup>
+                    <option *ngIf="!item.childs" [ngValue]="item.id" [selected]="item.id===annonce?.categorie?.id">{{item.nom}}</option>
+                  </ng-template>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Pays</label>
+              <div class="">
+                <select class="form-control" formControlName="pays_id">
+                  <option value=""></option>
+                  <option *ngFor="let p of pays" [value]="p.id">{{p.nom}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Type annonce</label>
+              <div class="">
+                <select class="form-control" formControlName="type_annonce">
+                  <option value=""></option>
+                  <option *ngFor="let item of customType.TypeAnnonce | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Type deal</label>
+              <div class="">
+                <select class="form-control" formControlName="deal_type">
+                  <option value=""></option>
+                  <option *ngFor="let item of customType.TypeDeal | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div [style.display]="deal_type_display==1 ? 'block': 'none' ">
+            <div class="form-group row">
+              <label class="col-sm-2 form-control-label" for="default-input">% de reduction
+                <span class="fl-required">*</span>
+              </label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="default-input" formControlName="amount_discount">
+              </div>
+            </div>
+          </div>
+          <div [style.display]="deal_type_display==3 ? 'block': 'none' ">
+            <div class="form-group row">
+              <label class="col-sm-2 form-control-label" for="default-input">Texte personnaliser
+                <span class="fl-required">*</span>
+              </label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="default-input" formControlName="deal_custom">
+              </div>
+            </div>
+          </div>
+          <div [style.display]="deal_type_display!=0 ? 'block': 'none' ">
+            <div class="form-group row">
+              <label class="col-sm-2 form-control-label" for="default-input">Période deal
+                <span class="fl-required">*</span>
+              </label>
+              <div class="col-sm-10">
+                <input type="text" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control"
+                />
+                <!-- <ng2-flatpickr formControlName="start_discount" [config]="exampleOptions" class=" form-control"></ng2-flatpickr> -->
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Etat produit</label>
+              <div class="">
+                <select class="form-control" formControlName="etat_produit">
+                  <option value=""></option>
+                  <option *ngFor="let item of customType.TypeEtatProduit | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Status annonce</label>
+              <div class="">
+                <select class="form-control" formControlName="etat">
+                  <option value=""></option>
+                  <option *ngFor="let item of customType.TypeStatusAnnonce | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Etat annonce</label>
+              <div class="">
+                <select class="form-control" formControlName="etat_annonce">
+                  <option value=""></option>
+                  <option *ngFor="let item of customType.TypeEtatAnnonce | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label for="readonly-input" class="form-control-label">Supprimé</label>
+              <div class="">
+                <select class="form-control" formControlName="deleted">
+                  <option value=""></option>
+                  <option *ngFor="let item of customType.TypeSupprimeAnnonce | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="form-group col">
+              <label class="form-control-label p-t-0">Disponible dans tous les pays</label>
+              <div class="">
+                <label class="custom-control custom-radio">
+                  <input id="radio1" formControlName="all_country" n type="radio" [value]="true" class="custom-control-input">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Oui</span>
+                </label>
+                <label class="custom-control custom-radio">
+                  <input id="radio1" formControlName="all_country" type="radio" [value]="false" class="custom-control-input">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Non</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label class="form-control-label p-t-0">Sponsorisé? </label>
+              <div class="">
+                <label class="custom-control custom-radio">
+                  <input id="radio1" formControlName="homepage_sponsoring" [value]="true" type="radio" class="custom-control-input">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Oui</span>
+                </label>
+                <label class="custom-control custom-radio">
+                  <input id="radio1" formControlName="homepage_sponsoring" [value]="false" type="radio" class="custom-control-input">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description">Non</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div [style.display]="sponsoring_display === true ? 'block': 'none' ">
+            <div class="form-group row">
+              <label class="col-sm-2 form-control-label" for="default-input">Période sponsoring
+                <span class="fl-required">*</span>
+              </label>
+              <div class="col-sm-10">
+                <input type="text" daterangepicker [options]="options" (selected)="selectedDateSponsoring($event, daterangeSponsoring)" class="form-control"
+                />
+
+              </div>
+            </div>
+
+          </div>
+
+
+
+          <div *ngIf="auto_moto()==='immo'">
+            <h2>Annonce Immo</h2>
+
+
+            <div class="row">
+              <div class="form-group col">
+                <label for="active-input" class="form-control-label">Type d'offre</label>
+                <div class="">
+                  <select class="form-control" formControlName="type_good">
+                    <option *ngFor="let item of customType.TypeGood | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="active-input" class="form-control-label">Nombre de chambre</label>
+                <div class="">
+                  <input type="number" class="form-control active" formControlName="room" placeholder="">
+                </div>
+              </div>
+
+              <div class="form-group col">
+                <label for="active-input" class="form-control-label">Nombre de piéce</label>
+                <div class="">
+                  <input type="number" class="form-control active" formControlName="all_room" placeholder="">
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="active-input" class="form-control-label">Nombre de douche</label>
+                <div class="">
+                  <input type="number" class="form-control active" formControlName="shower" placeholder="">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col">
+                <label for="active-input" class="form-control-label">Etage</label>
+                <div class="">
+                  <input type="number" class="form-control active" formControlName="floor" placeholder="">
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="active-input" class="form-control-label">Surface</label>
+                <div class="">
+                  <input type="number" class="form-control active" formControlName="surface" placeholder="150">
+                </div>
+              </div>
+              <div class="form-group col">
+                <label for="active-input" class="form-control-label">Unité de surface </label>
+                <div class="">
+                  <input type="text" class="form-control active" formControlName="surface_unit" placeholder="m2">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div *ngIf="auto_moto()=='auto_moto'">
+            <h2>Annonce Auto/Moto</h2>
+            <div class="form-group row">
+              <label for="active-input" class="col-sm-2 form-control-label">Marque</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control active" formControlName="maker" placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="active-input" class="col-sm-2 form-control-label">Model</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control active" formControlName="model" placeholder="">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="active-input" class="col-sm-2 form-control-label">Type de transmission</label>
+              <div class="col-sm-10">
+                <select class="form-control" formControlName="transmission">
+                  <option *ngFor="let item of customType.TypeTransmission | keys" [value]="item.key">{{item.value | titlecase}}</option>
+
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="active-input" class="col-sm-2 form-control-label">Type de carburant</label>
+              <div class="col-sm-10">
+                <select class="form-control" formControlName="fuel">
+                  <option *ngFor="let item of customType.TypeCarburant | keys" [value]="item.key">{{item.value | titlecase}}</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="active-input" class="col-sm-2 form-control-label">Année</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control active" formControlName="year" placeholder="">
+              </div>
+            </div>
+
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-2 form-control-label" for="fl-label-526968995">Message modération</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" placeholder="" formControlName="message_moderation">{{message_moderation}}</textarea>
+            </div>
+          </div>
+
+
+          <div class="col-sm-12">
+            <button class="btn bold btn-primary">Editer</button>
+
+            <span class="btn btn-success" (click)="moderate(1)" *ngIf="annonce?.etat != 1">
+              <i class="la la-check ks-icon"></i> Valider
+            </span>
+            <span class="btn btn-danger" (click)="moderate(2)" *ngIf="annonce?.etat != 2">
+              <i class="la la-close ks-icon"></i> Rejeter
+            </span>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

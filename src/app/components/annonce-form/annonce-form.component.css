@@ -1,0 +1,29 @@
+
+.bloc_photo_ad {
+  display: flex;
+  flex-direction: row;
+  width: 550px;
+}
+
+.bloc_photo_ad .item, .item {
+  margin: auto;
+  width: 33%;
+}
+
+.bloc_photo_ad .item img,.item img {
+  width: 100%;
+  height: auto;
+}
+
+.bloc_photo_ad .item .action {
+  margin: 5px auto;
+  text-align: center;
+}
+
+.click{
+  color: white;
+}
+
+.center-form{
+  text-align: center;
+}

@@ -1,0 +1,15 @@
+[
+    {"name": "Burkina Faso", "code" :"BF"},
+    {"name": "Benin", "code" :"BJ"},
+    {"name": "Congo (Democratic Republic of the)", "code" :"CD"},
+    {"name": "Congo", "code" :"CG"},
+    {"name": "Côte d'Ivoire", "code" :"CI"},
+    {"name": "Cameroon", "code" :"CM"},
+    {"name": "Gabon", "code" :"GA"},
+    {"name": "Guinea", "code" :"GN"},
+    {"name": "Madagascar", "code" :"MG"},
+    {"name": "Mali", "code" :"ML"},
+    {"name": "Niger", "code" :"NE"},
+    {"name": "Senegal", "code" :"SN"},
+    {"name": "Togo", "code" :"TG"}
+]

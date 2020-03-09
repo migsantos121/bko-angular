@@ -1,0 +1,67 @@
+<div class="modal fade slide-up add-moderateur-form-modal" id="add-commercial-form-modal" tabIndex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{titre}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="ks-block">
+          <div class="" id="">
+            <form [formGroup]='addForm' (ngSubmit)="submitForm(addForm.value)">
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Username
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="text" class="form-control" id="default-input3" formControlName="username">
+                <div *ngIf="addForm.controls['username'].errors && addForm.get('username').touched" class="error-msg">
+                  <div [hidden]="!addForm.controls['username'].errors.required">Username obligatoire.</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="example-search-input" class="col-form-label">Début - Fin</label>
+                <input type="text" id="daterange" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control"
+                />
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" [disabled]="!disableFilter">Filter</button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+        <div *ngIf="!disableFilter">
+          <div *ngIf="freelancerEvents$ | async; let events">
+            <div>
+              <p>Total installations sur la période: {{ events.total }}</p>
+            </div>
+
+            <table datatable class="table table-hover ks-table-cells-vertical-align-middle row-border hover">
+              <thead>
+                <th>Date</th>
+                <th>#Installation</th>
+              </thead>
+              <tbody *ngIf="testfunc(events.items); let installevents;">
+                <tr role=row *ngFor="let key of objectKey(installevents);">
+                  <td>
+                    {{ key }}
+                  </td>
+                  <td>
+                    {{ installevents[key] }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

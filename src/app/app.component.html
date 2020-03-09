@@ -1,0 +1,18 @@
+<!-- BEGIN HEADER -->
+<bo-navbar *ngIf="_apisService.isLogged()"></bo-navbar>
+<!-- END HEADER -->
+<div class="ks-page-container ks-dashboard-tabbed-sidebar-fixed-tabs">
+
+  <!-- BEGIN DEFAULT SIDEBAR -->
+  <div class="ks-column ks-sidebar ks-info ks-iconbar-compact" *ngIf="_apisService.isLogged()">
+    <bo-aside></bo-aside>
+  </div>
+  <!-- END DEFAULT SIDEBAR -->
+  <div class="ks-column ks-page">
+    <div class="ks-page-content">
+      <div class="ks-page-content-body">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

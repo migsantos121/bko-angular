@@ -1,0 +1,156 @@
+<ngx-loading [show]="status$ | async" [config]="{ backdropBorderRadius: '14px', fullScreenBackdrop: true }"></ngx-loading>
+<bo-header [title]="titre$"></bo-header>
+
+<div class="ks-crm-contacts-container">
+  <div class="ks-crm-contacts-users-list-column">
+    <div class="column is-one-third">
+      <form class="center">
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Code">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Periode">
+          </div>
+          <div class="col">
+            <select class="form-control" formControlName="pays">
+              <option value="">Choisir un pays</option>
+              <option *ngFor="let item of pays$ | async" [value]="item.id">{{item.nom}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <button type="submit" name="button" class="btn btn-primary" (click)="search()">Rechercher</button>
+            <button name="button" class="btn btn-bo" data-toggle="modal" data-target=".add-commercial-form-modal">Ajouter</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+
+    <div class="ks-crm-contacts-users-list-column-table-container">
+      <table class="table table-hover ks-table-cells-vertical-align-middle ">
+        <thead>
+          <tr>
+            <th>Commercial</th>
+            <th>Code</th>
+            <th>Pays</th>
+            <th>Status</th>
+            <th>Activation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr role="row">
+            <td>
+              Demba Ndiaye
+            </td>
+            <td>
+              SN0012
+            </td>
+            <td>
+              Sénégal
+            </td>
+            <td>
+              Actif
+            </td>
+            <td>
+              200
+            </td>
+          </tr>
+          <tr role="row">
+            <td>
+              Demba Ndiaye
+            </td>
+            <td>
+              SN0012
+            </td>
+            <td>
+              Sénégal
+            </td>
+            <td>
+              Actif
+            </td>
+            <td>
+              200
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- <div class="has-text-centered pull-right navigation">
+        <label class="control">
+          <input type="text" class="input" placeholder="Aller à la page" [(ngModel)]="page" />
+          <button type="button" name="button" class="btn btn-primary btn-sm" (click)="goToPage()">Aller</button>
+        </label>
+        <p style="display: inline">
+          <a (click)="getPreviousPage()" *ngIf="prev" class="btn btn-bo btn-sm">Précédent</a>
+          Page {{current_page}} sur {{total}}
+          <a (click)="getPage()" *ngIf="next" class="btn btn-bo btn-sm click">Suivant</a>
+        </p>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade slide-up add-commercial-form-modal" id="add-commercial-form-modal" tabIndex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter un commercial</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="ks-block">
+          <div class="" id="">
+            <form [formGroup]='editForm' (ngSubmit)="onFormSubmit.emit(editForm.value)">
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Nom
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="text" class="form-control" id="default-input" formControlName="nom">
+              </div>
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Prénom
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="text" class="form-control" id="default-input" formControlName="prenom">
+              </div>
+
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Code
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="text" class="form-control" id="default-input" formControlName="code">
+              </div>
+
+              <div class="row">
+                <div class="col form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Pays
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <select class="form-control" formControlName="pays">
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

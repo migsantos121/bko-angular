@@ -1,0 +1,70 @@
+<div class="ks-wrapper ks-sidebar-wrapper">
+  <ul class="nav nav-pills nav-stacked">
+    <!-- <li class="nav-item ks-user dropdown">
+      <a class="nav-link dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false">
+        <img src="https://api.adorable.io/avatars/285/{{user_mail}}.png" width="36" height="36" class="ks-avatar rounded-circle">
+        <div class="ks-info">
+          <div class="ks-name">{{user_name}}</div>
+        </div>
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/">Profile</a>
+        <a class="dropdown-item" (click)="logout()">Log Out</a>
+      </div>
+    </li> -->
+    <li class="nav-item" *ngIf="!isFreelancer()"  >
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/app']">
+        <span class="ks-icon la la-dashboard"></span>
+        <span>Tableau de bord</span>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="!isFreelancer()">
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/annonces']">
+        <span class="ks-icon la la-cubes"></span>
+        <span>Annonces</span>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="!isFreelancer()">
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/collections']">
+        <span class="ks-icon la la-flask"></span>
+        <span>Collections</span>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="!isFreelancer()">
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/vendeurs']">
+        <span class="ks-icon la la-toggle-off"></span>
+        <span>Vendeurs</span>
+      </a>
+    </li>
+    <li class="nav-item " *ngIf="isAdmin()">
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/export']">
+        <span class="ks-icon la la-puzzle-piece"></span>
+        <span>Export/Push</span>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="!isFreelancer()">
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/premium']">
+        <span class="ks-icon la la-desktop"></span>
+        <span>Premium</span>
+      </a>
+    </li>
+    <li class="nav-item " *ngIf="isAdmin()">
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/moderateurs']">
+        <span class="ks-icon la la-users"></span>
+        <span>Users</span>
+      </a>
+    </li>
+    <li class="nav-item" *ngIf="!isModerator()">
+      <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true }" [routerLink]="['/freelancers']">
+        <!-- <span class="ks-icon la la-"></span> -->
+        <span>Freelancers</span>
+      </a>
+    </li>
+    <!-- <li class="nav-item">
+      <a class="nav-link " [routerLink]="['commerciaux']">
+        <span class="ks-icon la la-flask"></span>
+        <span>Commerciaux</span>
+      </a>
+    </li> -->
+  </ul>
+</div>

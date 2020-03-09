@@ -1,0 +1,41 @@
+<div class="modal bd-promote-form" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="display: none;"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]='promoteForm' (ngSubmit)="submitForm(promoteForm.value);" #pForm="ngForm">
+        <div class="modal-header">
+          <h5 class="modal-title">Programmer promotionee</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="la la-close"></span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="form-group row">
+              <label for="example-search-input" class="col-6 col-form-label">Période promotion</label>
+              <div class="col-6">
+                <div class="form-group">
+                    <input type="text" daterangepicker [options]="options" (selected)="selectedDate($event, daterange)" class="form-control" value="{{ protomotionDate }}"
+                  />
+                </div>
+                <!-- <date-picker formControlName="end_date" format="YYYY/MM/DD"></date-picker> -->
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="example-search-input" class="col-6 col-form-label">Mettre sur la page d'acceuil</label>
+              <div class="col-lg-6">
+                <input class="form-control" formControlName="homepage" type="checkbox" />
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Ajouter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

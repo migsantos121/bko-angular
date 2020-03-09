@@ -1,0 +1,6 @@
+.center{
+  text-align: center;
+}
+.label-danger, .error-msg{
+  color: red;
+}

@@ -1,0 +1,114 @@
+<div class="modal fade slide-up add-moderateur-form-modal" id="add-commercial-form-modal" tabIndex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{titre}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="la la-close"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="ks-block">
+          <div class="" id="">
+            <form [formGroup]='addForm' (ngSubmit)="submitForm(addForm.value)">
+              <span *ngIf="message" class="label label-danger">{{message}}</span>
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Prénom
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="text" class="form-control" id="default-input" formControlName="firstname">
+                <div *ngIf="addForm.controls['firstname'].errors  && addForm.get('firstname').touched" class="error-msg">
+                  <div [hidden]="!addForm.controls['firstname'].errors.required">Prénom obligatoire.</div>
+                </div>
+              </div>
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Nom
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="text" class="form-control" id="default-input2" formControlName="lastname">
+                <div *ngIf="addForm.controls['lastname'].errors && addForm.get('lastname').touched" class="error-msg">
+                  <div [hidden]="!addForm.controls['lastname'].errors.required">Nom obligatoire.</div>
+                </div>
+              </div>
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input" style="left: 16px; right: 15px;">Username
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="text" class="form-control" id="default-input3" formControlName="username">
+                <div *ngIf="addForm.controls['username'].errors && addForm.get('username').touched" class="error-msg">
+                  <div [hidden]="!addForm.controls['username'].errors.required">Username obligatoire.</div>
+                </div>
+
+              </div>
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input4" style="left: 16px; right: 15px;">Mot de passe
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="password" [(ngModel)]="password" class="form-control" id="default-input4" formControlName="password">
+                <p class="label label-danger" *ngIf="addForm.get('password').hasError('minlength')">Le mot de passe doit faire minimum 6 caractéres...</p>
+
+              </div>
+              <div class=" form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input5" style="left: 16px; right: 15px;">Repeter le mot de passe
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <input type="password" class="form-control" id="default-input5" formControlName="confirm_password">
+                <p class="label label-danger" *ngIf="addForm.hasError('mismatch')  && addForm.get('confirm_password').touched">Les mots de passes ne correspondent pas</p>
+                <p class="label label-danger" *ngIf="addForm.get('confirm_password').hasError('minlength')">Le mot de passe doit faire minimum 6 caractéres...</p>
+
+              </div>
+
+              <div class="form-group">
+                <div class="fl-flex-label fl-collapsed fl-background">
+                  <label class="fl-label" for="default-input6" style="left: 16px; right: 15px;">Role
+                    <span class="fl-required">*</span>
+                  </label>
+                </div>
+                <select class="form-control" formControlName="role">
+                  <option value="moderator">Moderator</option>
+                  <option value="admin">Admin</option>
+                  <option value="freelancer">Freelancer</option>
+                </select>
+                <div *ngIf="addForm.controls['role'].errors && !addForm.controls['role'].pristine" class="error-msg">
+                  <div [hidden]="!addForm.controls['role'].errors.required">Username obligatoire.</div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col form-group">
+                  <div class="fl-flex-label fl-collapsed fl-background">
+                    <label class="fl-label" for="default-input7" style="left: 16px; right: 15px;">pays
+                      <span class="fl-required">*</span>
+                    </label>
+                  </div>
+                  <!-- <input type="text" class="form-control" id="default-input7" formControlName="country"> -->
+                  <select class="form-control" formControlName="country">
+                    <option *ngFor="let country of countries" [ngValue]="country.code">{{country.name}}</option>
+                  </select>
+
+                  <div *ngIf="addForm.controls['country'].errors  && addForm.get('country').touched" class="error-msg">
+                    <div [hidden]="!addForm.controls['country'].errors.required">Pays obligatoire.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" [disabled]="!addForm.valid">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

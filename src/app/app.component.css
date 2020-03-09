@@ -1,0 +1,294 @@
+.ks-color-danger,
+.ks-color-2 {
+  color: #ef5350 !important;
+}
+
+.ks-color-1 {
+  color: #4caf50 !important;
+}
+
+.card.panel.panel-default.ks-light.ks-panel.ks-login {
+  width: 375px;
+  margin: 0 auto;
+}
+
+.ks-time {
+  float: right;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 400;
+  color: #858585;
+  position: relative;
+  top: 3px;
+}
+
+.ks-color-danger,
+.ks-color-2 {
+  color: #ef5350 !important;
+}
+
+.ks-color-1,
+.ks-color-success {
+  color: #4caf50 !important;
+}
+
+.ks-color-0,
+.ks-color-warning {
+  color: #f7ca18 !important;
+}
+
+.is-one-third {
+  margin: 10px auto;
+}
+
+.table tr.active td {
+  background-color: #ff9e15 !important;
+  color: white;
+}
+
+[ng-click],
+[data-ng-click],
+[x-ng-click],
+.nav-item {
+  cursor: pointer;
+}
+
+.fermer {
+  height: 12px;
+  margin-left: 11px;
+  margin-bottom: 11px;
+  padding: 0;
+  margin-right: 0;
+  top: 1px;
+  float: right;
+}
+
+.bloc_photo_ad {
+  display: flex;
+  flex-direction: row;
+  width: 550px;
+}
+
+.bloc_photo_ad .item {
+  margin: auto;
+  width: 33%;
+}
+
+.bloc_photo_ad .item img {
+  width: 100%;
+  height: auto;
+}
+
+.bloc_photo_ad .item .action {
+  margin: 5px auto;
+  text-align: center;
+}
+
+
+
+.ks-time {
+  float: right;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 400;
+  color: #858585;
+  position: relative;
+  top: 3px;
+}
+
+.ks-color-danger,
+.ks-color-2 {
+  color: #ef5350 !important;
+}
+
+.ks-color-1,
+.ks-color-success {
+  color: #4caf50 !important;
+}
+
+.ks-color-0,
+.ks-color-warning {
+  color: #f7ca18 !important;
+}
+
+.is-one-third {
+  margin: 10px auto;
+}
+
+.table tr.active td {
+  background-color: #ff9e15 !important;
+  color: white;
+}
+
+[ng-click],
+[data-ng-click],
+[x-ng-click],
+.click,
+.nav-item {
+  cursor: pointer;
+}
+
+.add-contact-form-modal .modal-content {
+  width: 600px;
+}
+
+.fermer {
+  height: 12px;
+  margin-left: 11px;
+  margin-bottom: 11px;
+  padding: 0;
+  margin-right: 0;
+  top: 1px;
+  float: right;
+}
+
+.bloc_photo_ad {
+  display: flex;
+  flex-direction: row;
+  width: 550px;
+}
+
+.bloc_photo_ad .item {
+  margin: auto;
+  width: 33%;
+}
+
+.bloc_photo_ad .item img {
+  width: 100%;
+  height: auto;
+}
+
+.bloc_photo_ad .item .action {
+  margin: 5px auto;
+  text-align: center;
+}
+
+.click{
+  color: white;
+}
+.center{
+  text-align: center;
+}
+
+.backdrop{
+  z-index: 9999;
+}
+
+.text-concat {
+  position: relative;
+  display: inline-block;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 6.9em; /* (Number of lines you want visible) * (line-height) */
+  line-height: 1.2em;
+  text-align:justify;
+}
+
+.is-one-third{
+  margin: 10px 50px;
+}
+
+.navigation{
+  margin: auto 50px;
+}
+
+
+
+
+.ks-time {
+  float: right;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 400;
+  color: #858585;
+  position: relative;
+  top: 3px;
+}
+
+.ks-color-danger,
+.ks-color-2 {
+  color: #ef5350 !important;
+}
+
+.ks-color-1,
+.ks-color-success {
+  color: #4caf50 !important;
+}
+
+.ks-color-0,
+.ks-color-warning {
+  color: #f7ca18 !important;
+}
+
+.is-one-third {
+  margin: 10px auto;
+}
+
+
+[ng-click],
+[data-ng-click],
+[x-ng-click],
+.click,
+.nav-item {
+  cursor: pointer;
+}
+
+.fermer {
+  height: 12px;
+  margin-left: 11px;
+  margin-bottom: 11px;
+  padding: 0;
+  margin-right: 0;
+  top: 1px;
+  float: right;
+}
+
+.bloc_photo_ad {
+  display: flex;
+  flex-direction: row;
+  width: 550px;
+}
+
+.bloc_photo_ad .item {
+  margin: auto;
+  width: 33%;
+}
+
+.bloc_photo_ad .item img {
+  width: 100%;
+  height: auto;
+}
+
+.bloc_photo_ad .item .action {
+  margin: 5px auto;
+  text-align: center;
+}
+
+.click{
+  color: white;
+}
+.center{
+  text-align: center;
+}
+
+.backdrop{
+  z-index: 9999;
+}
+
+.text-concat {
+  position: relative;
+  display: inline-block;
+  word-wrap: break-word;
+  overflow: hidden;
+  max-height: 6.9em; /* (Number of lines you want visible) * (line-height) */
+  line-height: 1.2em;
+  text-align:justify;
+}
+
+.is-one-third{
+  margin: 10px 50px;
+}
+
+.navigation{
+  margin: auto 50px;
+}
